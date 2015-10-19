@@ -1,0 +1,38 @@
+{
+  "name": "auditable",
+  "version": "0.0.1",
+  "description": "auditable types, in javascript",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel -w *.js -d dist test.js & nodemon dist/test.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "babel -d dist index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcherny/auditable.git"
+  },
+  "keywords": [
+    "auditable",
+    "history",
+    "audit",
+    "persistent",
+    "immutable",
+    "undo",
+    "redo",
+    "type"
+  ],
+  "author": "Boris Cherny <boris@performancejs.com> (http://performancejs.com/)",
+  "license": "CC-BY-4.0",
+  "bugs": {
+    "url": "https://github.com/bcherny/auditable/issues"
+  },
+  "homepage": "https://github.com/bcherny/auditable#readme",
+  "dependencies": {
+    "stack-trace": "0.0.9"
+  },
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "nodemon": "^1.7.1"
+  }
+}
