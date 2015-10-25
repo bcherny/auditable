@@ -1,4 +1,4 @@
-import { clone, isPlainObject } from 'lodash'
+import { cloneDeep, isPlainObject } from 'lodash'
 import { get as getStackTrace } from 'stack-trace'
 
 class AuditableHistoryState {
@@ -23,51 +23,45 @@ export class Auditable {
 			throw new TypeError('data should be an object')
 		}
 
-		Auditable.assign(this, data)
+		this.data = {}
+
+		Auditable.assign(this, this.data, data)
 		Auditable.addHistoryStateFor(this, data)
 
 	}
 
-	// (auditable: Auditable) => Object
-	static clone (auditable) {
-		return Object.keys(auditable).map(k => {
-			if (isPlainObject(auditable[k])) {
-				return Auditable.clone(auditable[k])
-			} else {
-				return clone(key)
-			}
-		})
+	// (data: Object) => Object
+	static clone (data) {
+		return cloneDeep(data)
 	}
 
-	// (auditable: Auditable, data: Object) => void
-	static assign (auditable, data) {
+	// (auditable: Auditable, store: Object, data: Object) => void
+	static assign (auditable, store, data) {
 
-		// (to :> Object, data: Any) => void
-		const assign = (to, data) => {
-
-			if (!isPlainObject(data)) {
-				return
-			}
-
+		// (to :> Object, store: Object, data: Any) => void
+		const assign = (to, store, data) => {
 			Object.keys(data).forEach(k => {
-				Object.defineProperty(data, k, {
+				if (isPlainObject(data[k])) {
+					assign(to[k] = {}, store[k] = {}, data[k])
+				} else {
+					store[k] = Auditable.clone(data[k])
+					Object.defineProperty(to, k, {
 
-					// (k: String) => Any
-					get: (k) => data[k],
+						// (k: String) => Any
+						get: () => store[k],
 
-					// (k: String, v: Any) => Any
-					set: (k, v) => {
-						const cur = Auditable.clone(auditable)
-						Auditable.addHistoryStateFor(auditable, cur)
-						data[k] = v
-					}
+						// (v: Any) => Any
+						set: (v) => {
+							store[k] = Auditable.clone(v)
+							Auditable.addHistoryStateFor(auditable, Auditable.clone(auditable.data))
+						}
 
- 				})
-				assign(data[k] = {}, data[k])
+	 				})
+	 			}
 			})
 		}
 
-		assign(auditable, data)
+		assign(auditable, store, data)
 
 	}
 

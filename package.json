@@ -1,11 +1,12 @@
 {
   "name": "auditable",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "auditable types, in javascript",
   "main": "index.js",
   "scripts": {
     "start": "babel -w *.js -d dist test.js & nodemon dist/test.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "babel -d dist test.js; nodeunit dist/test.js",
+    "tdd": "babel --sourceMaps inline -w *.js -d dist test.js & nodemon --exec nodeunit dist/test.js",
     "prepublish": "babel -d dist index.js"
   },
   "repository": {
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "babel": "^5.8.23",
-    "nodemon": "^1.7.1"
+    "nodemon": "^1.7.1",
+    "nodeunit": "^0.9.1"
   }
 }
