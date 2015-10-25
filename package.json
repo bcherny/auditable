@@ -1,6 +1,6 @@
 {
   "name": "auditable",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "auditable types, in javascript",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/bcherny/auditable#readme",
   "dependencies": {
+    "lodash": "^3.10.1",
     "stack-trace": "0.0.9"
   },
   "devDependencies": {

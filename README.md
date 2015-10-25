@@ -48,6 +48,7 @@ Auditable.getHistoryFor(carModel)
 - compare with baobab
 - implement with ES7 proxies, to support runtime property addition/removal
 - statically typed interface
+- support for mutating multiple properties in a single transaction
 
 ### why not use Object.observe?
 
