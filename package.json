@@ -1,6 +1,6 @@
 {
   "name": "auditable",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "auditable types, in javascript",
   "main": "index.js",
   "scripts": {
@@ -37,5 +37,8 @@
     "babel": "^5.8.23",
     "nodemon": "^1.7.1",
     "nodeunit": "^0.9.1"
+  },
+  "engines": {
+    "node": ">= 4.0.0"
   }
 }
