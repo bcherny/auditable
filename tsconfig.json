@@ -1,0 +1,17 @@
+{
+  "emitDecoratorMetadata": true,
+  "experimentalAsyncFunctions": true,
+  "experimentalDecorators": true,
+  "moduleResolution": "node",
+  "noEmitHelpers": true,
+  "preserveConstEnums": true,
+  "target": "es6",
+  "include": [
+    "typings/main.d.ts",
+    "node_modules/immutable/dist/immutable.d.ts",
+    "index.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

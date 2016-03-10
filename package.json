@@ -1,0 +1,32 @@
+{
+  "name": "immut",
+  "version": "1.0.0",
+  "description": "immutable",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p jsconfig.json",
+    "watch": "tsc -p jsconfig.json -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/bcherny/immut.git"
+  },
+  "keywords": [
+    "immutable"
+  ],
+  "author": "Boris Cherny <boris@performancejs.com> (http://performancejs.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bcherny/immut/issues"
+  },
+  "homepage": "https://github.com/bcherny/immut#readme",
+  "devDependencies": {
+    "typescript": "^1.8.7",
+    "typings": "^0.7.7"
+  },
+  "dependencies": {
+    "immutable": "^3.7.6",
+    "lodash": "^4.6.1"
+  }
+}
