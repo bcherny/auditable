@@ -4,9 +4,10 @@
   "description": "immutable",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p jsconfig.json",
-    "watch": "tsc -p jsconfig.json -w",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "tdd": "tsc -w & ava -w",
+    "test": "tsc; ava",
+    "watch": "tsc -w"
   },
   "repository": {
     "type": "git",
@@ -22,11 +23,12 @@
   },
   "homepage": "https://github.com/bcherny/immut#readme",
   "devDependencies": {
-    "typescript": "^1.8.7",
-    "typings": "^0.7.7"
+    "ava": "^0.15.2",
+    "typescript": "^1.8.10",
+    "typings": "^1.3"
   },
   "dependencies": {
-    "immutable": "^3.7.6",
-    "lodash": "^4.6.1"
+    "immutable": "^3.8.1",
+    "lodash": "^4.13.1"
   }
 }
