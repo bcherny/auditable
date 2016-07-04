@@ -1,70 +1,90 @@
 import * as Immutable from 'immutable'
 import {first} from 'lodash'
 
-export interface List<A> extends Array<A> {
-  (): A[][]
+const AUDIT = Symbol()
+const AUDIT_WITH_TRACES = Symbol()
+
+export interface List<A> extends Array<A> { }
+
+type Data<A> = A[][]
+
+interface DataWithTraces<A> {
+  data: A[]
+  trace: string[]
 }
 
 export interface ListConstructor {
   <A>(...as: A[]): List<A>
-  audit<A>(a: List<A>): A[][]
+  audit<A>(a: List<A>): Data<A>
+  auditWithTraces<A>(a: List<A>): DataWithTraces<A>[]
 }
 
 interface State<A> {
-  audit: Immutable.List<A>[]
+  audit: {
+    data: Immutable.List<A>,
+    trace: string[]
+  }[]
 }
 
-const AUDIT = Symbol()
+function JustList <A>(...as: A[]): List<A> {
 
-export const List: ListConstructor = Object.assign(
+  const state: State<A> = {
+    audit: [
+      { data: Immutable.List(as), trace: null }
+    ]
+  }
 
-  function List <A>(...as: A[]): List<A> {
-
-    const state: State<A> = {
-      audit: [
-        Immutable.List(as)
-      ]
-    }
-
-    const interceptor = {
-      get: function (target: List<A>, prop: number | symbol): A | A[] | A[][] {
-        console.log('get', prop)
-        switch (prop) {
-          case Symbol.toStringTag: return first(state.audit).toJS()
-          case AUDIT: return state.audit.map(_ => _.toJS())
-          default: return first(state.audit).get(prop as number)
-        }
-      },
-      set: function (target: List<A>, prop: number | symbol, value: A) {
-        console.log('set', prop, value)
-        switch (prop) {
-          case AUDIT: break
-          default:
-            state.audit = [
-              first(state.audit).set(prop as number, value)
-            ].concat(
-              state.audit
-            )
-        }
-        return true
+  const interceptor = {
+    get: function (target: List<A>, prop: number | symbol): A | A[] | Data<A> | {data: A[], trace: string[]}[] {
+      switch (prop) {
+        case Symbol.toStringTag:
+          return first(state.audit).data.toJS()
+        case AUDIT:
+          return state.audit.map(_ => _.data.toJS())
+        case AUDIT_WITH_TRACES:
+          return state.audit.map(({data, trace}) => ({
+            trace,
+            data: data.toJS()
+          }))
+        default:
+          return first(state.audit).data.get(prop as number)
       }
-    }
-
-    const p = new Proxy<List<A>>(this, interceptor)
-    p[AUDIT] = () => state.audit
-    return p
-  }, {
-    audit: function Audit <A>(a: List<A>): A[][] {
-      console.log('audit', a)
-      return a[AUDIT]
+    },
+    set: function (target: List<A>, prop: number | symbol, value: A) {
+      switch (prop) {
+        case AUDIT: break
+        default:
+          state.audit = [
+            {
+              data: first(state.audit).data.set(prop as number, value),
+              trace: getTrace()
+            }
+          ].concat(
+            state.audit
+          )
+      }
+      return true
     }
   }
-)
 
-function getTrace() {
-  try {
-    throw new Error
-  } catch (e) {
-    console.log(e.stack)
+  const p = new Proxy<List<A>>(this, interceptor)
+  p[AUDIT] = () => state.audit
+  return p
+}
+
+export const List: ListConstructor = Object.assign(JustList, {
+  audit: function audit <A>(a: List<A>): Data<A> {
+    return a[AUDIT]
+  },
+  auditWithTraces: function auditWithTraces<A>(a: List<A>): DataWithTraces<A>[] {
+    return a[AUDIT_WITH_TRACES]
+  }
+})
+
+function getTrace(): string[] {
+  try { throw new Error } catch (e) {
+    const stack: string[] = e.stack.split('\n').slice(3)
+    stack[0] = stack[0].slice(7) // rm leading "     at" on 1st line
+    return stack
   }
 }

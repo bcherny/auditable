@@ -2,28 +2,38 @@
 const Immutable = require('immutable');
 const lodash_1 = require('lodash');
 const AUDIT = Symbol();
-exports.List = Object.assign(function List(...as) {
+const AUDIT_WITH_TRACES = Symbol();
+function JustList(...as) {
     const state = {
         audit: [
-            Immutable.List(as)
+            { data: Immutable.List(as), trace: null }
         ]
     };
     const interceptor = {
         get: function (target, prop) {
-            console.log('get', prop);
             switch (prop) {
-                case Symbol.toStringTag: return lodash_1.first(state.audit).toJS();
-                case AUDIT: return state.audit.map(_ => _.toJS());
-                default: return lodash_1.first(state.audit).get(prop);
+                case Symbol.toStringTag:
+                    return lodash_1.first(state.audit).data.toJS();
+                case AUDIT:
+                    return state.audit.map(_ => _.data.toJS());
+                case AUDIT_WITH_TRACES:
+                    return state.audit.map(({ data, trace }) => ({
+                        trace: trace,
+                        data: data.toJS()
+                    }));
+                default:
+                    return lodash_1.first(state.audit).data.get(prop);
             }
         },
         set: function (target, prop, value) {
-            console.log('set', prop, value);
             switch (prop) {
                 case AUDIT: break;
                 default:
                     state.audit = [
-                        lodash_1.first(state.audit).set(prop, value)
+                        {
+                            data: lodash_1.first(state.audit).data.set(prop, value),
+                            trace: getTrace()
+                        }
                     ].concat(state.audit);
             }
             return true;
@@ -32,10 +42,13 @@ exports.List = Object.assign(function List(...as) {
     const p = new Proxy(this, interceptor);
     p[AUDIT] = () => state.audit;
     return p;
-}, {
-    audit: function Audit(a) {
-        console.log('audit', a);
+}
+exports.List = Object.assign(JustList, {
+    audit: function audit(a) {
         return a[AUDIT];
+    },
+    auditWithTraces: function auditWithTraces(a) {
+        return a[AUDIT_WITH_TRACES];
     }
 });
 function getTrace() {
@@ -43,6 +56,8 @@ function getTrace() {
         throw new Error;
     }
     catch (e) {
-        console.log(e.stack);
+        const stack = e.stack.split('\n').slice(3);
+        stack[0] = stack[0].slice(7); // rm leading "     at" on 1st line
+        return stack;
     }
 }
