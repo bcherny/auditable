@@ -25,11 +25,12 @@ console.log(List.audit(myList))
 // Get back a list of changes and causes
 console.log(List.auditWithTraces(myList))
 // => [
-//      {data: [10, 20, 3], trace: [
-//        "Test.fn (/Users/boris/immut/test.js:7:5)",
-//        ...
-//      ]},
-//      {data: [10, 2, 3], trace: [...]},
-//      {data: [1, 2, 3], trace: [...]}
+//      {
+//        data: [10, 20, 3],
+//        time: "2016-07-06T01:49:22.559Z",
+//        trace: [Test.fn (/Users/boris/immut/test.js:7:5)", ...]
+//      },
+//      {data: [10, 2, 3], time: "...", trace: [...]},
+//      {data: [1, 2, 3], time: "...", trace: [...]}
 //    ]
 ```
