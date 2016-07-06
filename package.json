@@ -1,6 +1,6 @@
 {
   "name": "immut",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "immutable",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,14 @@
     "url": "git+ssh://git@github.com/bcherny/immut.git"
   },
   "keywords": [
-    "immutable"
+    "immutable",
+    "audit",
+    "history",
+    "trace",
+    "stack",
+    "time",
+    "list",
+    "array"
   ],
   "author": "Boris Cherny <boris@performancejs.com> (http://performancejs.com/)",
   "license": "MIT",
@@ -26,7 +33,5 @@
     "ava": "^0.15.2",
     "typescript": "^1.8.10",
     "typings": "^1.3"
-  },
-  "dependencies": {
   }
 }

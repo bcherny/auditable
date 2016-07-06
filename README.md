@@ -2,6 +2,12 @@
 
 > Better immutable data structures for modern browsers
 
+### Installation
+
+```sh
+npm install --save immut
+```
+
 ### Usage
 
 ```ts
@@ -33,4 +39,33 @@ console.log(List.auditWithTraces(myList))
 //      {data: [10, 2, 3], time: "...", trace: [...]},
 //      {data: [1, 2, 3], time: "...", trace: [...]}
 //    ]
+```
+
+### Scripts
+
+|               |            |
+|---------------|------------|
+| Run tests     | `npm test` |
+| Compile TypeScript | `npm run build` |
+| Watch Typescript | `npm run watch` |
+| Watch Typescript & TDD tests     | `npm run tdd` |
+
+### TODO
+
+- [x] Array
+- [ ] Set
+- [ ] WeakSet
+- [ ] Object
+- [ ] Map
+- [ ] WeakMap
+
+### Future direction
+
+If the [operator overloading proposal](https://esdiscuss.org/topic/operator-overloading-proposal) is adopted, we can apply pass-by-value semantics to our immutable types for far more efficient functional data structures:
+
+```ts
+const a = Set(1, 2, 3)
+const b = a + 4
+assert(a === Set(1, 2, 3))
+assert(b === Set(1, 2, 3, 4))
 ```
