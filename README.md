@@ -65,7 +65,8 @@ If the [operator overloading proposal](https://esdiscuss.org/topic/operator-over
 
 ```ts
 const a = Set(1, 2, 3)
-const b = a + 4
+const b = a.add(4)
+assert(a !== b)
 assert(a === Set(1, 2, 3))
 assert(b === Set(1, 2, 3, 4))
 ```
