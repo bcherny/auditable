@@ -1,22 +1,22 @@
-# Immut
+# Auditable
 
-> Better immutable data structures for modern browsers
+> Auditable data structures for modern browsers
 
 ### Installation
 
 ```sh
-npm install --save immut
+npm install --save auditable
 ```
 
 ### Usage
 
 ```ts
-import {List} from 'immut'
+import {List} from 'auditable'
 
 // Make a new List
 const myList = List(1, 2, 3)
 
-// Modify it (looks mutable, but is immutable under the hood!)
+// Modify it
 a[0] = 10
 a[1] = 20
 
@@ -34,7 +34,7 @@ console.log(List.auditWithTraces(myList))
 //      {
 //        data: [10, 20, 3],
 //        time: "2016-07-06T01:49:22.559Z",
-//        trace: [Test.fn (/Users/boris/immut/test.js:7:5)", ...]
+//        trace: [Test.fn (/Users/boris/auditable/test.js:7:5)", ...]
 //      },
 //      {data: [10, 2, 3], time: "...", trace: [...]},
 //      {data: [1, 2, 3], time: "...", trace: [...]}
@@ -61,7 +61,7 @@ console.log(List.auditWithTraces(myList))
 
 ### Future direction
 
-If the [operator overloading proposal](https://esdiscuss.org/topic/operator-overloading-proposal) is adopted, we can apply pass-by-value semantics to our immutable types for far more efficient functional data structures:
+If the [operator overloading proposal](https://esdiscuss.org/topic/operator-overloading-proposal) is adopted, we can apply pass-by-value semantics to our auditable types for far more efficient functional data structures:
 
 ```ts
 const a = Set(1, 2, 3)
