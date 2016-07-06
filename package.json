@@ -1,6 +1,6 @@
 {
   "name": "auditable",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "audit who modified a JS Array, Object, Map, Set, etc. and when",
   "main": "index.js",
   "scripts": {

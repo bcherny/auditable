@@ -1,4 +1,8 @@
-# Auditable
+# Auditable [![Build Status][build]](https://circleci.com/gh/bcherny/auditable) [![npm]](https://www.npmjs.com/package/auditable) [![mit]](https://opensource.org/licenses/MIT)
+
+[build]: https://img.shields.io/circleci/project/bcherny/auditable.svg?branch=master&style=flat-square
+[npm]: https://img.shields.io/npm/v/auditable.svg?style=flat-square
+[mit]: https://img.shields.io/npm/l/auditable.svg?style=flat-square
 
 > Auditable data structures for modern browsers
 
